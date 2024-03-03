@@ -1,31 +1,24 @@
-// Import the reaction Schema
-const reactionSchema = require("./ReactionSchema");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-//Define the thought schema using Mongoose
-const thoughtSchema = new schema({
-  //Define the textThought field
-  thoughtText: {
+const reactionSchema = new Schema({
+  reactionId: {
+    type: Schema.Types.ObjectId,
+    default: () => new mongoose.Types.ObjectId(),
+  },
+  reactionBody: {
     type: String,
     required: true,
-    minlength: 1,
     maxlength: 280,
   },
-  //Define the createdAt field with default value and custom getter method
+  username: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
-    get: (createdAt) => dateFormat(createdAt), //Custome gettermethod to format the timestamp
+    get: (createdAtVal) => dateformat(createdAtVal),
   },
-  //Define the username field
-  username: {
-    type: stringify,
-    required: true,
-  },
-  //Define the reactions field as an array of  reactionSchema
-  reactions: [reactionSchema],
 });
-//Create the Thought model using the thought schema
-const Thought = mongoose.model("Thought", thoughtSchema);
-
-//Export the Thought
-module.exports = Thought;
+module.exports = reactionSchema;

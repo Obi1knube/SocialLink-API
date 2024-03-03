@@ -1,55 +1,40 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
-// Define the schema for a reaction
-const reactionSchema = new Schema({
-  reactionId: {
-    type: mongoose.Schema.Types.ObjectId,
-    default: () => new mongoose.Types.ObjectId(),
-  },
-  reactionBody: {
-    type: String,
-    required: true,
-    maxlength: 280,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    // Format the createdAt date using dateFormat function
-    get: (createdAtVal) => dateFormat(createdAtVal),
-  },
-});
-
-// Define the schema for a thought
-const thoughtSchema = new Schema({
+//Define the thought schema using Mongoose
+const thoughtSchema = new schema({
+  //Define the textThought field
   thoughtText: {
     type: String,
     required: true,
     minlength: 1,
     maxlength: 280,
   },
+  //Define the createdAt field with default value and custom getter method
   createdAt: {
     type: Date,
     default: Date.now,
-    // Format the createdAt date using dateFormat function
-    get: (createdAtVal) => dateFormat(createdAtVal),
+    get: (createdAt) => dateFormat(createdAt), //Custome gettermethod to format the timestamp
   },
+  //Define the username field
   username: {
     type: String,
     required: true,
   },
-  reactions: [reactionSchema],
+  //Define the reactions field as an array of  reactionSchema
+  reactions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Reaction",
+    },
+  ],
 });
 
-// Add a virtual property to get the count of reactions for a thought
 thoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 });
-
+//Create the Thought model using the thought schema
 const Thought = mongoose.model("Thought", thoughtSchema);
 
+//Export the Thought
 module.exports = Thought;
