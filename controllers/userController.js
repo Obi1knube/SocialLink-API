@@ -5,7 +5,7 @@ const { User, Thought } = require("../models");
 User.sync();
 Thought.sync();
 
-const userController = {
+module.exports = {
   // GET all users
   getAllUsers: async (req, res) => {
     try {
@@ -113,5 +113,3 @@ const userController = {
     }
   },
 };
-
-module.exports = userController;
