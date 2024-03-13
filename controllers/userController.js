@@ -1,10 +1,6 @@
 // Import necessary modules from Mongoose
 const { User, Thought } = require("../models");
 
-// Sync Mongoose model with the MongoDB
-User.sync();
-Thought.sync();
-
 module.exports = {
   // GET all users
   getAllUsers: async (req, res) => {
@@ -22,8 +18,7 @@ module.exports = {
       const user = await User.findById(req.params.userId)
         .populate("thoughts")
         .populate("friends")
-        .select("-__v")
-        .then(user);
+        .select("-__v");
       if (!user) {
         res.status(404).json({ message: "User not found" });
         return;
